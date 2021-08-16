@@ -1,8 +1,7 @@
 package ru.geekbrains.androidwithkotlin.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import ru.geekbrains.androidwithkotlin.R
+import androidx.appcompat.app.AppCompatActivity
 import ru.geekbrains.androidwithkotlin.databinding.MainActivityBinding
 
 class MainActivity : AppCompatActivity() {
