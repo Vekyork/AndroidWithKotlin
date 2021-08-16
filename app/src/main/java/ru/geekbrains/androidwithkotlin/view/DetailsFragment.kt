@@ -17,6 +17,7 @@ import ru.geekbrains.androidwithkotlin.BuildConfig
 import ru.geekbrains.androidwithkotlin.R
 import ru.geekbrains.androidwithkotlin.databinding.DetailsFragmentBinding
 import ru.geekbrains.androidwithkotlin.model.AppState
+import ru.geekbrains.androidwithkotlin.model.data.City
 import ru.geekbrains.androidwithkotlin.model.data.Weather
 import ru.geekbrains.androidwithkotlin.model.dto.WeatherDTO
 import ru.geekbrains.androidwithkotlin.viewmodel.DetailsViewModel
@@ -74,7 +75,10 @@ class DetailsFragment : Fragment() {
                 binding.main.show()
                 binding.loadingLayout.hide()
                 binding.main.showSnackBar(getString(R.string.error), getString(R.string.reload)) {
-                    viewModel.getWeatherFromRemoteSource(weatherBundle.city.lat, weatherBundle.city.lon)
+                    viewModel.getWeatherFromRemoteSource(
+                        weatherBundle.city.lat,
+                        weatherBundle.city.lon
+                    )
                 }
             }
         }
@@ -89,6 +93,7 @@ class DetailsFragment : Fragment() {
                     city.lat.toString(),
                     city.lon.toString()
                 )
+                saveCity(city, weather)
             }
             weather.let {
                 temperatureValue.text = it.temperature.toString()
@@ -100,6 +105,20 @@ class DetailsFragment : Fragment() {
                 .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
                 .into(headerIcon)
         }
+    }
+
+    private fun saveCity(
+        city: City,
+        weather: Weather
+    ) {
+        viewModel.saveCityToDB(
+            Weather(
+                city,
+                weather.temperature,
+                weather.feelsLike,
+                weather.condition
+            )
+        )
     }
 
     companion object {
