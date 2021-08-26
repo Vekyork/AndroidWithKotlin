@@ -11,11 +11,11 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import ru.geekbrains.androidwithkotlin.R
 
-private const val CHANNEL_ID = "CHANNEL_MAIN"
+public const val CHANNEL_ID = "CHANNEL_MAIN"
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
-    private val notificationId = 10
+    private var notificationId = 10
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         val title = remoteMessage.notification?.title ?: "Title"
@@ -33,22 +33,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            createNotificationChannel(notificationManager)
-        }
-
+        notificationId++
         notificationManager.notify(notificationId, notificationBuilder.build())
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannel(notificationManager: NotificationManager) {
-        val channelName = "Channel name"
-        val descriptionText = "Channel description"
-        val importance = NotificationManager.IMPORTANCE_DEFAULT
-        val channel = NotificationChannel(CHANNEL_ID, channelName, importance).apply {
-            description = descriptionText
-        }
-        notificationManager.createNotificationChannel(channel)
     }
 
     override fun onNewToken(token: String) {
